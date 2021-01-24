@@ -111,7 +111,13 @@ import {
                             else{
                                 this.$router.push('/')
                             }
+  this.$store.commit('retrieveToken', res.token) ;
+
                         }
+                      
+    this.$store.commit('forceReLoadMenu');
+    console.log(this.$store.state.signReLoadMenu);
+
                     }).catch(error => {
                         console.error(error);
                     });

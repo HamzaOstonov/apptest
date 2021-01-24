@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer clipped permanent app>
+  <v-navigation-drawer clipped permanent app :key = "componentKey">
     <v-list>
       <div v-for="(link, i) in links" :key="i">
         <v-list-item v-if="boshMenu(link) === '1'" :to="link.to">
@@ -88,7 +88,6 @@ export default {
       },*/
     ],
   }),
-
   methods: {
     boshMenu(item) {
       if (item.subLinks) {
@@ -112,6 +111,12 @@ export default {
         else 
           return false;
       });
+    },
+  },
+
+  computed: {
+    componentKey() {
+      return this.$store.state.signReLoadMenu;
     },
   },
 };

@@ -36,6 +36,7 @@ export default new Vuex.Store({
     clientorder: [],
     dates: [],
     token: sessionStorage.getItem('jwt') || null, 
+    signReLoadMenu: 0,
   },
   getters: {
     isLoading(state) {
@@ -141,6 +142,12 @@ export default new Vuex.Store({
     deletegood: (state, id) => {
       let i = state.goods.findIndex(el => el.id == id);
       state.goods.splice(i, 1);
-    }
+    },
+    forceReLoadMenu (state) {
+      state.signReLoadMenu++
+    },
+    retrieveToken(state, token) {
+      state.token = token
+    }, 
   }
 }); 
