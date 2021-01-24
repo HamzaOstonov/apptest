@@ -1,13 +1,13 @@
 <template>
-  <v-app-bar app clipped-left :key = "componentKey">
+  <v-app-bar app clipped-left :key="componentKey">
     <span>Toolbar</span>
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
     <v-toolbar-title>Title</v-toolbar-title>
     <v-spacer></v-spacer>
-    
-    <v-btn v-if="!loggedIn" to="/register" exact > Ruyxatdan utish</v-btn>
-    <v-btn v-if="!loggedIn" to="/login" exact > Kirish</v-btn>
-    <v-btn v-if="loggedIn" to="/logout" exact > Chiqish</v-btn>
+
+    <v-btn v-if="!loggedIn" to="/register" exact> Ruyxatdan utish</v-btn>
+    <v-btn v-if="!loggedIn" to="/login" exact> Kirish</v-btn>
+    <v-btn v-if="loggedIn" v-on:click="logout()" exact> Chiqish</v-btn>
   </v-app-bar>
 </template>
 
@@ -71,8 +71,16 @@ export default {
     loggedIn() {
       return this.$store.getters.loggedIn;
     },
-     componentKey() {
+    componentKey() {
       return this.$store.state.signReLoadMenu;
+    },
+  },
+  methods: {
+    logout() {
+      //this.loggedin = false;
+      this.$store.commit("destroyToken");
+      this.$store.commit("forceReLoadMenu");
+      sessionStorage.removeItem('jwt');
     },
   },
 };

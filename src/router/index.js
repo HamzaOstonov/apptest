@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
-import Zakaz from '../views/Zakaz.vue'
+import Test from '../views/Test.vue'
 import Tovar from '../views/Tovar.vue'
 import Client from '../views/Client.vue'
 import Login from '@/views/Login'
@@ -23,9 +23,9 @@ const routes = [
         component: About
     },
     {
-        path: '/zakaz',
-        name: 'Zakaz',
-        component: Zakaz,
+        path: '/test',
+        name: 'Test',
+        component: Test,
         meta: {
             requiresAuth: true
         }
@@ -62,6 +62,15 @@ const routes = [
             guest: true
         }
     }, 
+    {
+        path: '/admin',
+        name: 'admin',
+        component: Client, 
+        meta: {
+            requiresAuth: true,
+            requiresAdmin: true
+        }
+    },
 ]
 
 const router = new VueRouter({

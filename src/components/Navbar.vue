@@ -50,6 +50,15 @@ export default {
           requiresAuth: true,
         },
       },
+       {
+        to: "/admin",
+        icon: "mdi-view-dashboard",
+        text: "Testlarni kiritish/tahrirlash",
+        role: {
+          requiresAuth: true,
+          requiresAdmin: true,
+        },
+      },
       /*{
         icon: "mdi-tennis",
         text: "Справочник",
@@ -88,17 +97,25 @@ export default {
       },*/
     ],
   }),
+  computed: {
+    componentKey() {
+      return this.$store.state.signReLoadMenu;
+    },
+     loggedIn() {
+      return this.$store.getters.loggedIn;
+    },
+  },
   methods: {
     boshMenu(item) {
       if (item.subLinks) {
         for (var i = 0; i < item.subLinks.length; i++) {
           //console.log(item.subLinks[i]);
-          if (!item.subLinks[i].role.requiresAuth || sessionStorage.getItem("jwt") != null)
+          if (!item.subLinks[i].role.requiresAuth || this.loggedIn)
             return "2";
         }
         return "0";
       } else {
-        if (!item.role.requiresAuth || sessionStorage.getItem("jwt") != null)
+        if (!item.role.requiresAuth || this.loggedIn)
           return "1";
         else 
           return "0";
@@ -106,7 +123,7 @@ export default {
     },
     even: function (hamzalar) {
       return hamzalar.filter(function (hamza) {
-        if (!hamza.role.requiresAuth || sessionStorage.getItem("jwt") != null)
+        if (!hamza.role.requiresAuth || this.loggedIn)
           return true;
         else 
           return false;
@@ -114,10 +131,6 @@ export default {
     },
   },
 
-  computed: {
-    componentKey() {
-      return this.$store.state.signReLoadMenu;
-    },
-  },
+  
 };
 </script>

@@ -1,99 +1,80 @@
 <template>
-  <div>
-    <h4>Testlar ruyxati</h4>
-    <form>
-      <label for="email">E-Mail Address</label>
-      <div>
-        <input id="email" type="email" v-model="email" required autofocus />
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <div>
-          <input id="password" type="password" v-model="password" required />
-        </div>
-      </div>
-      <div>
-        <button type="submit" @click="handleSubmit">Login</button>
-      </div>
-    </form>
+ <div id="quiz">
+  <div v-if="introStage">
+    <h1>Welcome to the Quiz: {{title}}</h1>
+    <p>
+      Some kind of text here. Blah blah.
+    </p>
+    
+    <button @click="startQuiz">START!</button>
   </div>
+  
+  <div v-if="questionStage">
+    <question 
+              :question="questions[currentQuestion]"
+              v-on:answer="handleAnswer"
+              :question-number="currentQuestion+1"
+    ></question>
+  </div>
+  
+  <div v-if="resultsStage">
+    You got {{correct}} right out of {{questions.length}} questions. Your percentage is {{perc}}%.
+  </div>
+  
+</div>
 </template>
 
 <script>
-
-import {
-  //  serverget,
-  //  deletes,
-  serverpost //,
-  //serverput,
-  //serverdel //hamza test git
-} from "@/const";
-
+//const quizData = 'https://api.myjson.com/bins/ahn1p';
 export default {
-  data() {
+ data() {
     return {
-      email: "",
-      password: "",
-    };
+      introStage:false,
+      questionStage:false,
+      resultsStage:false,
+      title:'',
+      questions:[],
+      currentQuestion:0,
+      answers:[],
+      correct:0,
+      perc:null
+    }
   },
-  methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      if (this.password.length > 0) {
-        /*this.$http
-          .post("http://localhost:3000/login", {
-            email: this.email,
-            password: this.password,
-          })
-          .then((response) => {
-            let is_admin = response.data.user.is_admin;
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-            localStorage.setItem("jwt", response.data.token);
-
-            if (localStorage.getItem("jwt") != null) {
-              this.$emit("loggedIn");
-              if (this.$route.params.nextUrl != null) {
-                this.$router.push(this.$route.params.nextUrl);
-              } else {
-                if (is_admin == 1) {
-                  this.$router.push("admin");
-                } else {
-                  this.$router.push("dashboard");
-                }
-              }
-            }
-          })
-          .catch(function (error) {
-            console.error(error.response);
-          });*/
-
-        serverpost("http://localhost:3000/login", {
-          email: this.email,
-          password: this.password,
-        })
-          .then((res) => {
-            let is_admin = res.data.user.is_admin;
-            sessionStorage.setItem("user", JSON.stringify(res.data.user));
-            sessionStorage.setItem("jwt", res.data.token);
-
-            if (sessionStorage.getItem("jwt") != null) {
-              this.$emit("loggedIn");
-              if (this.$route.params.nextUrl != null) {
-                this.$router.push(this.$route.params.nextUrl);
-              } else {
-                if (is_admin == 1) {
-                  this.$router.push("admin");
-                } else {
-                  this.$router.push("dashboard");
-                }
-              }
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+  created() {
+    //fetch(quizData)
+    fetch('./myjson.json')
+    .then(res => res.json())
+    .then(res => {
+      this.title = res.title;
+      this.questions = res.questions;
+      this.introStage = true;
+    })
+  },
+  methods:{
+    startQuiz() {
+      this.introStage = false;
+      this.questionStage = true;
+      console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
+    },
+    handleAnswer(e) {
+      console.log('answer event ftw',e);
+      this.answers[this.currentQuestion]=e.answer;
+      if((this.currentQuestion+1) === this.questions.length) {
+        this.handleResults();
+        this.questionStage = false;
+        this.resultsStage = true;
+      } else {
+        this.currentQuestion++;
       }
     },
-  },
+    handleResults() {
+      console.log('handle results');
+      this.questions.forEach((a, index) => {
+        if(this.answers[index] === a.answer) this.correct++;        
+      });
+      this.perc = ((this.correct / this.questions.length)*100).toFixed(2);
+      console.log(this.correct+' '+this.perc);
+    }
+  }
 };
 </script>

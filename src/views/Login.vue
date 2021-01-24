@@ -20,11 +20,10 @@
 </template>
 
 <script>
-
 import {
   //  serverget,
   //  deletes,
-  serverpost //,
+  serverpost, //,
   //serverput,
   //serverdel //hamza test git
 } from "@/const";
@@ -72,11 +71,13 @@ export default {
           password: this.password,
         })
           .then((res) => {
-            let is_admin = res.data.user.is_admin;
-            sessionStorage.setItem("user", JSON.stringify(res.data.user));
-            sessionStorage.setItem("jwt", res.data.token);
+            let is_admin = res.user.is_admin;
+            sessionStorage.setItem("user", JSON.stringify(res.user));
+            sessionStorage.setItem("jwt", res.token);
 
             if (sessionStorage.getItem("jwt") != null) {
+              this.$store.commit("retrieveToken", res.token);
+              this.$store.commit("forceReLoadMenu");
               this.$emit("loggedIn");
               if (this.$route.params.nextUrl != null) {
                 this.$router.push(this.$route.params.nextUrl);
@@ -84,7 +85,7 @@ export default {
                 if (is_admin == 1) {
                   this.$router.push("admin");
                 } else {
-                  this.$router.push("dashboard");
+                  this.$router.push("home");
                 }
               }
             }

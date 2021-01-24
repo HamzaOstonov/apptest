@@ -1,42 +1,45 @@
 <template>
-    <div>
-        <h4>Register</h4>
-        <form>
-            <label for="name">Name</label>
-            <div>
-                <input id="name" type="text" v-model="name" required autofocus>
-            </div>
+  <div>
+    <h4>Register</h4>
+    <form>
+      <label for="name">Name</label>
+      <div>
+        <input id="name" type="text" v-model="name" required autofocus />
+      </div>
 
-            <label for="email" >E-Mail Address</label>
-            <div>
-                <input id="email" type="email" v-model="email" required>
-            </div>
+      <label for="email">E-Mail Address</label>
+      <div>
+        <input id="email" type="email" v-model="email" required />
+      </div>
 
-            <label for="password">Password</label>
-            <div>
-                <input id="password" type="password" v-model="password" required>
-            </div>
+      <label for="password">Password</label>
+      <div>
+        <input id="password" type="password" v-model="password" required />
+      </div>
 
-            <label for="password-confirm">Confirm Password</label>
-            <div>
-                <input id="password-confirm" type="password" v-model="password_confirmation" required>
-            </div>
+      <label for="password-confirm">Confirm Password</label>
+      <div>
+        <input
+          id="password-confirm"
+          type="password"
+          v-model="password_confirmation"
+          required
+        />
+      </div>
 
-            <label for="password-confirm">Is this an administrator account?</label>
-            <div>
-                <select v-model="is_admin">
-                    <option value=1>Yes</option>
-                    <option value=0>No</option>
-                </select>
-            </div>
+      <label for="password-confirm">Is this an administrator account?</label>
+      <div>
+        <select v-model="is_admin">
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+      </div>
 
-            <div>
-                <button type="submit" @click="handleSubmit">
-                    Register
-                </button>
-            </div>
-        </form>
-    </div>
+      <div>
+        <button type="submit" @click="handleSubmit">Register</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 
@@ -44,32 +47,35 @@
 import {
   //  serverget,
   //  deletes,
-  serverpost //,
+  serverpost, //,
   //serverput,
   //serverdel //hamza test git
 } from "@/const";
 
-    export default {
-        props : ["nextUrl"],
-        data(){
-            return {
-                name : "",
-                email : "",
-                password : "",
-                password_confirmation : "",
-                is_admin : null
-            }
-        },
-        methods : {
-            handleSubmit(e) {
-                e.preventDefault()
+export default {
+  props: ["nextUrl"],
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      is_admin: null,
+    };
+  },
+  methods: {
+    handleSubmit(e) {
+      e.preventDefault();
 
-                if (this.password === this.password_confirmation && this.password.length > 0)
-                {
-                    let url = "http://localhost:3000/register"
-                    if(this.is_admin != null || this.is_admin == 1) url = "http://localhost:3000/register-admin"
-                    
-                    /*this.$http.post(url, {
+      if (
+        this.password === this.password_confirmation &&
+        this.password.length > 0
+      ) {
+        let url = "http://localhost:3000/register";
+        if (this.is_admin != null || this.is_admin == 1)
+          url = "http://localhost:3000/register-admin";
+
+        /*this.$http.post(url, {
                         name: this.name,
                         email: this.email,
                         password: this.password,
@@ -93,42 +99,39 @@ import {
                         console.error(error);
                     });
 */
-                    serverpost(url, {
-                        name: this.name,
-                        email: this.email,
-                        password: this.password,
-                        is_admin: this.is_admin
-                    }).then(res => {
-                        sessionStorage.setItem('user',JSON.stringify(res.user));
-                       
-                        sessionStorage.setItem('jwt',res.token)
+        serverpost(url, {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          is_admin: this.is_admin,
+        })
+          .then((res) => {
+            sessionStorage.setItem("user", JSON.stringify(res.user));
 
-                        if (sessionStorage.getItem('jwt') != null){
-                            this.$emit('loggedIn')
-                            if(this.$route.params.nextUrl != null){
-                                this.$router.push(this.$route.params.nextUrl)
-                            }
-                            else{
-                                this.$router.push('/')
-                            }
-  this.$store.commit('retrieveToken', res.token) ;
+            sessionStorage.setItem("jwt", res.token);
 
-                        }
-                      
-    this.$store.commit('forceReLoadMenu');
-    console.log(this.$store.state.signReLoadMenu);
+            if (sessionStorage.getItem("jwt") != null) {
+              this.$store.commit("retrieveToken", res.token);
+              this.$store.commit("forceReLoadMenu");
 
-                    }).catch(error => {
-                        console.error(error);
-                    });
-
-                } else {
-                    this.password = ""
-                    this.passwordConfirm = ""
-
-                    return alert("Passwords do not match")
-                }
+              this.$emit("loggedIn");
+              if (this.$route.params.nextUrl != null) {
+                this.$router.push(this.$route.params.nextUrl);
+              } else {
+                this.$router.push("/");
+              }
             }
-        }
-    }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        this.password = "";
+        this.passwordConfirm = "";
+
+        return alert("Passwords do not match");
+      }
+    },
+  },
+};
 </script>
