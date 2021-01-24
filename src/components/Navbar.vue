@@ -50,7 +50,7 @@ export default {
           requiresAuth: true,
         },
       },
-      {
+      /*{
         icon: "mdi-tennis",
         text: "Справочник",
         subLinks: [
@@ -85,7 +85,7 @@ export default {
         icon: "mdi-trophy",
         text: "Паролни узгартириш",
         role: {},
-      },
+      },*/
     ],
   }),
 

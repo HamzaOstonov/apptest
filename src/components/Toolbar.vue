@@ -7,7 +7,6 @@
 <script>
 export default {
   name: "Toolbar",
-
   data: () => ({
     ecosystem: [
       {
@@ -59,6 +58,11 @@ export default {
         href: "https://vuetifyjs.com/getting-started/frequently-asked-questions"
       }
     ]
-  })
+  }),
+  computed: {
+    loggedIn() {
+      return this.$store.getters.loggedIn
+    }
+  } 
 };
 </script>

@@ -34,7 +34,8 @@ export default new Vuex.Store({
     prices: [],
     orders: [],
     clientorder: [],
-    dates: []
+    dates: [],
+    token: sessionStorage.getItem('jwt') || null, 
   },
   getters: {
     isLoading(state) {
@@ -54,7 +55,10 @@ export default new Vuex.Store({
     },
     Agents: state => {
       return state.agents;
-    }
+    },
+    loggedIn(state) {
+      return state.token !== null
+    }, 
   },
   actions: {
     ["fetchArticles"]({ commit }, params) {
