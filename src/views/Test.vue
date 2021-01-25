@@ -26,14 +26,17 @@
 
 <script>
 //const quizData = 'https://api.myjson.com/bins/ahn1p';
+import myjson from "@/json/myjson.json";
 export default {
  data() {
     return {
       introStage:false,
       questionStage:false,
       resultsStage:false,
-      title:'',
-      questions:[],
+      //title:'',
+      title:myjson.title,
+      //questions:[],
+      questions:myjson.questions,
       currentQuestion:0,
       answers:[],
       correct:0,
@@ -42,19 +45,31 @@ export default {
   },
   created() {
     //fetch(quizData)
-    fetch('./myjson.json')
-    .then(res => res.json())
-    .then(res => {
-      this.title = res.title;
-      this.questions = res.questions;
+    //fetch('/'+'myjson2.json',  {
+    //  fetch(myjson2,  {
+    //  headers : { 
+    //    'Content-Type': 'application/json',
+    //    'Accept': 'application/json'
+    //   }
+//
+    //})
+    //.then(res => res.json())
+    //.then(res => res.text())
+    //.then(res => {
+    //  console.log("hamza "+res);
+        console.log("12345");
+        console.log(this.questions);
+    //  this.title = res.title;
+    //  this.questions = res.questions;
       this.introStage = true;
-    })
+    //})
   },
   methods:{
     startQuiz() {
+      console.log("1");
       this.introStage = false;
       this.questionStage = true;
-      console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
+      //console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
     },
     handleAnswer(e) {
       console.log('answer event ftw',e);
