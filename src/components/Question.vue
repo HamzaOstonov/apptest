@@ -1,3 +1,4 @@
+<template>
 <div>
   <strong>Question {{ questionNumber }}:</strong><br/>
   <strong>{{ question.text }} </strong>
@@ -15,11 +16,12 @@
 
   <button @click="submitAnswer">Answer</button>
 </div>
-
+</template>
 <script>
 // @ is an alias to /src
 
 export default {
+   name: "Question",
   data() {
      return {
        answer:''

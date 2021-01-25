@@ -10,11 +10,11 @@
   </div>
   
   <div v-if="questionStage">
-    <question 
+    <Question 
               :question="questions[currentQuestion]"
               v-on:answer="handleAnswer"
               :question-number="currentQuestion+1"
-    ></question>
+    ></Question>
   </div>
   
   <div v-if="resultsStage">
@@ -27,7 +27,9 @@
 <script>
 //const quizData = 'https://api.myjson.com/bins/ahn1p';
 import myjson from "@/json/myjson.json";
+import Question from "@/components/Question";
 export default {
+  components: { Question },
  data() {
     return {
       introStage:false,
