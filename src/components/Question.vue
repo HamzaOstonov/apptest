@@ -9,7 +9,7 @@
   </div>
 
   <div v-if="question.type === 'mc'">
-    <div v-for="(mcanswer,index) in question.answers">
+    <div v-for="(mcanswer,index) in question.answers" :key="index">
     <input type="radio" :id="'answer'+index" name="currentQuestion" v-model="answer" :value="mcanswer"><label :for="'answer'+index">{{mcanswer}}</label><br/>
     </div>
   </div>
