@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left :key="componentKey">
+  <v-app-bar app clipped-left :key="componentKey" v-if="activate">
     <span>Toolbar</span>
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
     <v-toolbar-title>Title</v-toolbar-title>
@@ -66,7 +66,15 @@ export default {
           "https://vuetifyjs.com/getting-started/frequently-asked-questions",
       },
     ],
+    activate: true
   }),
+  created () {
+    if (this.$route.path === '/login') {
+      this.activate = false
+    } else {
+      this.activate = true
+    }
+  },
   computed: {
     loggedIn() {
       return this.$store.getters.loggedIn;
@@ -74,6 +82,15 @@ export default {
     componentKey() {
       return this.$store.state.signReLoadMenu;
     },
+  },
+  watch: {
+    '$route.path' (val) {
+      if (val === '/login') {
+        this.activate = false
+      } else {
+        this.activate = true
+      }
+    }
   },
   methods: {
     logout() {
