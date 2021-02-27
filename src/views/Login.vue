@@ -15,6 +15,10 @@
       <div>
         <button type="submit" @click="handleSubmit">Login</button>
       </div>
+
+      <div v-if="err_log != ''">
+        <input id="input_err" type="text" v-model="err_log" />
+      </div>
     </form>
   </div>
 </template>
@@ -33,6 +37,7 @@ export default {
     return {
       email: "",
       password: "",
+      err_log: "",
     };
   },
   methods: {
@@ -71,27 +76,32 @@ export default {
           password: this.password,
         })
           .then((res) => {
-            let is_admin = res.user.is_admin;
-            sessionStorage.setItem("user", JSON.stringify(res.user));
-            sessionStorage.setItem("jwt", res.token);
-
-            if (sessionStorage.getItem("jwt") != null) {
-              this.$store.commit("retrieveToken", res.token);
-              this.$store.commit("forceReLoadMenu");
-              this.$emit("loggedIn");
-              if (this.$route.params.nextUrl != null) {
-                this.$router.push(this.$route.params.nextUrl);
-              } else {
-                if (is_admin == 1) {
-                  this.$router.push("admin");
+            if (!res.error) {
+              let is_admin = res.user.is_admin;
+              sessionStorage.setItem("user", JSON.stringify(res.user));
+              sessionStorage.setItem("jwt", res.token);
+              if (sessionStorage.getItem("jwt") != null) {
+                this.$store.commit("retrieveToken", res.token);
+                this.$store.commit("forceReLoadMenu");
+                this.$emit("loggedIn");
+                if (this.$route.params.nextUrl != null) {
+                  this.$router.push(this.$route.params.nextUrl);
                 } else {
-                  this.$router.push("home");
+                  if (is_admin == 1) {
+                    this.$router.push("admin");
+                  } else {
+                    this.$router.push("home");
+                  }
                 }
               }
+            } else {
+              console.error(res.error);
+              this.err_log = res.error;
             }
           })
           .catch((error) => {
             console.error(error);
+            this.err_log = error;
           });
       }
     },

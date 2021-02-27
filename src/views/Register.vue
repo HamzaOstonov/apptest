@@ -38,6 +38,10 @@
       <div>
         <button type="submit" @click="handleSubmit">Register</button>
       </div>
+
+      <div v-if="err_log != ''">
+        <input id="input_err" type="text" v-model="err_log" />
+      </div>
     </form>
   </div>
 </template>
@@ -61,6 +65,7 @@ export default {
       password: "",
       password_confirmation: "",
       is_admin: null,
+      err_log: "",
     };
   },
   methods: {
@@ -104,26 +109,30 @@ export default {
           email: this.email,
           password: this.password,
           is_admin: this.is_admin,
+          nickname: this.email,
         })
           .then((res) => {
-            sessionStorage.setItem("user", JSON.stringify(res.user));
-
-            sessionStorage.setItem("jwt", res.token);
-
-            if (sessionStorage.getItem("jwt") != null) {
-              this.$store.commit("retrieveToken", res.token);
-              this.$store.commit("forceReLoadMenu");
-
-              this.$emit("loggedIn");
-              if (this.$route.params.nextUrl != null) {
-                this.$router.push(this.$route.params.nextUrl);
-              } else {
-                this.$router.push("/");
+            if (!res.error) {
+              sessionStorage.setItem("user", JSON.stringify(res.user));
+              sessionStorage.setItem("jwt", res.token);
+              if (sessionStorage.getItem("jwt") != null) {
+                this.$store.commit("retrieveToken", res.token);
+                this.$store.commit("forceReLoadMenu");
+                this.$emit("loggedIn");
+                if (this.$route.params.nextUrl != null) {
+                  this.$router.push(this.$route.params.nextUrl);
+                } else {
+                  this.$router.push("/");
+                }
               }
+            } else {
+              console.error(res.error);
+              this.err_log = res.error;
             }
           })
           .catch((error) => {
             console.error(error);
+            this.err_log = error;
           });
       } else {
         this.password = "";
