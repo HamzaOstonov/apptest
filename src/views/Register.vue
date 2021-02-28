@@ -1,48 +1,58 @@
 <template>
   <div>
     <h4>Register</h4>
-    <form>
-      <label for="name">Name</label>
-      <div>
-        <input id="name" type="text" v-model="name" required autofocus />
-      </div>
+    <v-form>
+      <v-text-field
+        label="Name"
+        v-model="name"
+        required 
+        autofocus                       
+        ></v-text-field>
 
-      <label for="email">E-Mail Address</label>
-      <div>
-        <input id="email" type="email" v-model="email" required />
-      </div>
+      <v-text-field
+        label="E-Mail Address"
+        v-model="email"
+        required 
+        ></v-text-field>
 
-      <label for="password">Password</label>
-      <div>
-        <input id="password" type="password" v-model="password" required />
-      </div>
+ <v-text-field
+        label="Password"
+        v-model="password"
+        type="password"
+        required 
+        ></v-text-field>
+     
+      <v-text-field
+        label="Confirm Password"
+        v-model="password_confirmation"
+        type="password"
+        required 
+        ></v-text-field>
 
-      <label for="password-confirm">Confirm Password</label>
-      <div>
-        <input
-          id="password-confirm"
-          type="password"
-          v-model="password_confirmation"
-          required
-        />
-      </div>
 
-      <label for="password-confirm">Is this an administrator account?</label>
-      <div>
-        <select v-model="is_admin">
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </select>
-      </div>
+      <v-select
+          v-model="is_admin"
+          :items="is_admin_items"
+          menu-props="auto"
+          hide-details
+          label="Is this an administrator account?"
+          single-line
+        ></v-select>
+<v-btn
+      class="ma-2"
+      outlined
+      color="indigo"
+      @click="handleSubmit"
+    >
+      Register
+    </v-btn>
 
-      <div>
-        <button type="submit" @click="handleSubmit">Register</button>
-      </div>
+     
 
       <div v-if="err_log != ''">
         <input id="input_err" type="text" v-model="err_log" />
       </div>
-    </form>
+    </v-form>
   </div>
 </template>
 
@@ -66,6 +76,7 @@ export default {
       password_confirmation: "",
       is_admin: null,
       err_log: "",
+      is_admin_items: ['No', 'Yes'],
     };
   },
   methods: {
@@ -112,6 +123,12 @@ export default {
           nickname: this.email,
         })
           .then((res) => {
+              console.log("res");
+             
+             console.log(res);
+
+            if (!res) {
+              console.log(res);
             if (!res.error) {
               sessionStorage.setItem("user", JSON.stringify(res.user));
               sessionStorage.setItem("jwt", res.token);
@@ -126,12 +143,16 @@ export default {
                 }
               }
             } else {
-              console.error(res.error);
+              console.log(res.error);
               this.err_log = res.error;
+            }
+            } else {
+              console.log("serverdan javob bush keldi");
+              this.err_log="serverdan javob bush keldi";
             }
           })
           .catch((error) => {
-            console.error(error);
+            console.log(error);
             this.err_log = error;
           });
       } else {
