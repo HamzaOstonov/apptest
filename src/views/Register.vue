@@ -115,7 +115,8 @@ export default {
                         console.error(error);
                     });
 */
-        serverpost(url, {
+//        serverpost(url, {
+        postData(url, {
           name: this.name,
           email: this.email,
           password: this.password,
@@ -124,7 +125,6 @@ export default {
         })
           .then((res) => {
               console.log("res");
-             
              console.log(res);
 
             if (!res) {

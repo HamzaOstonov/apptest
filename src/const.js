@@ -23,13 +23,35 @@ export const dates = host + "/getDates";
 export const saldo = host + "/repsaldo";
 export const excel = host + "/repExcel";
 export const serverget = async addr => (await fetch(addr)).json();
-export const serverpost = async (addr, obj) =>
-  (await fetch(addr, {
-    method: "POST",
-    headers: {  'Accept': 'application/json, text/plain, */*' ,
-    'Content-Type': 'application/json' },
-    body: JSON.stringify(obj)
-  })).json();
+//export const serverpost = async (addr, obj) =>
+//  (await fetch(addr, {
+//    method: "POST",
+//    headers: {  'Accept': 'application/json, text/plain, */*' ,
+//    'Content-Type': 'application/json' },
+//    body: JSON.stringify(obj)
+//  })).json();
+
+export const postData = async (url = '', data = {}) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(data)
+    });
+    if (response.status !== 200) {
+    return {
+      error: true,
+      message: response.status // Xatolik kodini chiqarib beradi
+    };
+    }
+    return response.json();
+  };  
 export const serverput = async (addr, obj) =>
   (await fetch(addr, {
     method: "PUT",
