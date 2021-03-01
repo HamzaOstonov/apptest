@@ -51,6 +51,14 @@ export default {
         },
       },
        {
+        to: "/tests",
+        icon: "mdi-view-dashboard",
+        text: "Test(2) yechishga utish",
+        role: {
+          requiresAuth: true,
+        },
+      },
+       {
         to: "/admin",
         icon: "mdi-view-dashboard",
         text: "Testlarni kiritish/tahrirlash",

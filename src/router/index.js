@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Test from '../views/Test.vue'
+import Tests from '../views/Tests.vue'
+
 import Tovar from '../views/Tovar.vue'
 import Client from '../views/Client.vue'
 import Login from '@/views/Login'
@@ -26,6 +28,14 @@ const routes = [
         path: '/test',
         name: 'Test',
         component: Test,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/tests',
+        name: 'Tests',
+        component: Tests,
         meta: {
             requiresAuth: true
         }
