@@ -61,8 +61,8 @@
 import {
   //  serverget,
   //  deletes,
-  serverpost,
-  //postData, //,
+  //serverpost,
+  postData, //,
   //serverput,
   //serverdel //hamza test git
 } from "@/const";
@@ -116,8 +116,8 @@ export default {
                         console.error(error);
                     });
 */
-        serverpost(url, {
-//        postData(url, {
+    //    serverpost(url, {
+        postData(url, {
           name: this.name,
           email: this.email,
           password: this.password,
