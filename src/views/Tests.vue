@@ -1,81 +1,89 @@
 <template>
- <div id="quiz">
-  <div v-if="introStage">
-    <h1>Welcome to the Quiz: {{title}}</h1>
-    <p>
-      Some kind of text here. Blah blah.
-    </p>
-    
-    <button @click="startQuiz">START!</button>
-  </div>
-  
-  <div v-if="questionStage">
-    <Savol 
-      v-for="(item, index) in questions"
-              :question="questions[currentQuestion]"
-              v-on:answer="handleAnswer"
-              :question-number="currentQuestion+1"
-    ></Savol>
+  <div id="quiz">
+    <div v-if="introStage">
+      <h1>Welcome to the Quiz: {{ title }}</h1>
+      <p>Some kind of text here. Blah blah.</p>
 
-    <my-component
-  v-for="(item, index) in items"
-  v-bind:item="item"
-  v-bind:index="index"
-  v-bind:key="item.id"
-></my-component>
+      <button @click="startQuiz">START!</button>
+    </div>
 
+    <div v-if="questionStage">
+      <div
+        v-for="(item, index) in savollar"
+        v-bind:key="item.id"
+        v-bind:index="index"
+      >
+        <Savol :question="item" :question-number="item.Savolnum"></Savol>
+      </div>
+    </div>
+  <!-- https://abt.uz/ru/training/start -->
+    <div v-if="resultsStage">
+      You got {{ correct }} right out of {{ questions.length }} questions. Your
+      percentage is {{ perc }}%.
+    </div>
   </div>
-  
-  <div v-if="resultsStage">
-    You got {{correct}} right out of {{questions.length}} questions. Your percentage is {{perc}}%.
-  </div>
-  
-</div>
 </template>
 
 <script>
-//const quizData = 'https://api.myjson.com/bins/ahn1p';
+const quizData = "http://localhost:3000/GetKattaTest";
 import myjson from "@/json/myjson.json";
 import Savol from "@/components/Savol";
+import { serverget } from "@/const";
+
 export default {
   components: { Savol },
- data() {
+  data() {
     return {
-      introStage:false,
-      questionStage:false,
-      resultsStage:false,
+      introStage: false,
+      questionStage: false,
+      resultsStage: false,
       //title:'',
-      title:myjson.title,
-      //questions:[],
-      questions:myjson.questions,
-      currentQuestion:0,
-      answers:[],
-      correct:0,
-      perc:null
-    }
+      title: myjson.title,
+      savollar: [],
+      questions: myjson.questions,
+      currentQuestion: 0,
+      answers: [],
+      correct: 0,
+      perc: null,
+    };
   },
-  created() {
+  async created() {
+    await serverget(quizData).then((res) => {
+      if (res.Mavzu) {
+        //normal
+        if (res.Savollar != null) {
+          //this.$store.commit("setclients", res.data);
+          console.log(res.Savollar);
+          this.savollar = res.Savollar;
+        } else {
+          console.log("Savollar bo`sh");
+        }
+      } else {
+        //bo`sh
+        console.log("ma`lumot kelmadi");
+      }
+    });
     //fetch(quizData)
     //fetch('/'+'myjson2.json',  {
     //  fetch(myjson2,  {
-    //  headers : { 
+    //  headers : {
     //    'Content-Type': 'application/json',
     //    'Accept': 'application/json'
     //   }
-//
+    //
     //})
     //.then(res => res.json())
     //.then(res => res.text())
     //.then(res => {
     //  console.log("hamza "+res);
-        console.log("12345");
-        console.log(this.questions);
+    console.log("12345");
+    console.log(this.questions);
     //  this.title = res.title;
     //  this.questions = res.questions;
-      this.introStage = true;
+    this.introStage = true;
     //})
   },
-  methods:{
+  methods: {
     startQuiz() {
       console.log("1");
       this.introStage = false;
@@ -83,9 +91,9 @@ export default {
       //console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
     },
     handleAnswer(e) {
-      console.log('answer event ftw',e);
-      this.answers[this.currentQuestion]=e.answer;
-      if((this.currentQuestion+1) === this.questions.length) {
+      console.log("answer event ftw", e);
+      this.answers[this.currentQuestion] = e.answer;
+      if (this.currentQuestion + 1 === this.questions.length) {
         this.handleResults();
         this.questionStage = false;
         this.resultsStage = true;
@@ -94,13 +102,13 @@ export default {
       }
     },
     handleResults() {
-      console.log('handle results');
+      console.log("handle results");
       this.questions.forEach((a, index) => {
-        if(this.answers[index] === a.answer) this.correct++;        
+        if (this.answers[index] === a.answer) this.correct++;
       });
-      this.perc = ((this.correct / this.questions.length)*100).toFixed(2);
-      console.log(this.correct+' '+this.perc);
-    }
-  }
+      this.perc = ((this.correct / this.questions.length) * 100).toFixed(2);
+      console.log(this.correct + " " + this.perc);
+    },
+  },
 };
 </script>
