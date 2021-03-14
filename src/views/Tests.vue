@@ -15,6 +15,7 @@
       >
         <Savol :question="item" :question-number="item.Savolnum"></Savol>
       </div>
+      <v-btn @click="submit" class="success mx-0 mt-3">Finish test!</v-btn>
     </div>
   <!-- https://abt.uz/ru/training/start -->
     <div v-if="resultsStage">
@@ -90,6 +91,11 @@ export default {
       this.questionStage = true;
       //console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
     },
+     submit() {
+      console.log("1111");
+    
+      
+    } ,
     handleAnswer(e) {
       console.log("answer event ftw", e);
       this.answers[this.currentQuestion] = e.answer;

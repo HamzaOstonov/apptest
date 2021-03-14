@@ -3,22 +3,17 @@
     <strong>Question {{ questionNumber }}:</strong><br />
     <strong>{{ question.Savoltext }} </strong>
 
-      <div v-for="(mcanswer, index) in question.Javoblar" :key="index" class="divjavob">
-        <div class="divjavobcheck">
-          <input type="checkbox" value="Daniel" v-model="namesThatRhyme"/>
-        </div>
-        <div class="divjavobtext">
-          {{mcanswer.Javobnum}}
-          {{mcanswer.Javobtext}}
-        </div>
-      </div>
-
-      <v-radio-group label="Active?" v-model="active">
-  <v-radio name="active" label="No" :value="0"></v-radio>
-  <v-radio name="active" label="Yes" :value="1"></v-radio>                
-</v-radio-group>
-
-
+    <v-radio-group label="" v-model="active">
+      <v-radio
+        v-for="(mcanswer, index) in question.Javoblar"
+        :key="index"
+        name="active"
+        :label="mcanswer.Javobtext"
+        :value="mcanswer.Javobnum"
+        @change="getValue(questionNumber,mcanswer.Javobnum)"
+      >
+      </v-radio>
+    </v-radio-group>
   </div>
 </template>
 <script>
@@ -49,7 +44,8 @@ export default {
           text: "Column 2",
         },
       ],
-      active:1
+      active: 1,
+        clickVal: null,
     };
   },
   props: ["question", "question-number"],
@@ -57,6 +53,12 @@ export default {
     submitAnswer: function () {
       this.$emit("answer", { answer: this.answer });
       this.answer = null;
+    },
+    getValue(s,j) {
+      this.clickVal = j;
+      console.log(""+s+" : "+j);
+      // to workaround, uncomment lime below
+      // this.selected = v;
     },
   },
 };
@@ -79,8 +81,8 @@ export default {
 .divjavobcheck {
   position: absolute;
 }
-.divjavobtext{
+.divjavobtext {
   text-align: left;
-      margin: 0 0 10px 30px;
+  margin: 0 0 10px 30px;
 }
 </style>
