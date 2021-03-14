@@ -57,6 +57,8 @@ export default {
     getValue(s,j) {
       this.clickVal = j;
       console.log(""+s+" : "+j);
+      this.$emit("answer", { s: s, j: j });
+
       // to workaround, uncomment lime below
       // this.selected = v;
     },

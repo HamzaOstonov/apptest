@@ -13,7 +13,7 @@
         v-bind:key="item.id"
         v-bind:index="index"
       >
-        <Savol :question="item" :question-number="item.Savolnum"></Savol>
+        <Savol :question="item" :question-number="item.Savolnum" v-on:answer="handleAnswer"></Savol>
       </div>
       <v-btn @click="submit" class="success mx-0 mt-3">Finish test!</v-btn>
     </div>
@@ -98,14 +98,7 @@ export default {
     } ,
     handleAnswer(e) {
       console.log("answer event ftw", e);
-      this.answers[this.currentQuestion] = e.answer;
-      if (this.currentQuestion + 1 === this.questions.length) {
-        this.handleResults();
-        this.questionStage = false;
-        this.resultsStage = true;
-      } else {
-        this.currentQuestion++;
-      }
+      
     },
     handleResults() {
       console.log("handle results");
