@@ -13,6 +13,12 @@
         </div>
       </div>
 
+      <v-radio-group label="Active?" v-model="active">
+  <v-radio name="active" label="No" :value="0"></v-radio>
+  <v-radio name="active" label="Yes" :value="1"></v-radio>                
+</v-radio-group>
+
+
   </div>
 </template>
 <script>
@@ -43,6 +49,7 @@ export default {
           text: "Column 2",
         },
       ],
+      active:1
     };
   },
   props: ["question", "question-number"],
