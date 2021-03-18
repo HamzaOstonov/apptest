@@ -13,11 +13,15 @@
         v-bind:key="item.id"
         v-bind:index="index"
       >
-        <Savol :question="item" :question-number="item.Savolnum" v-on:answer="handleAnswer"></Savol>
+        <Savol
+          :question="item"
+          :question-number="item.Savolnum"
+          v-on:answer="handleAnswer"
+        ></Savol>
       </div>
       <v-btn @click="submit" class="success mx-0 mt-3">Finish test!</v-btn>
     </div>
-  <!-- https://abt.uz/ru/training/start -->
+    <!-- https://abt.uz/ru/training/start -->
     <div v-if="resultsStage">
       You got {{ correct }} right out of {{ questions.length }} questions. Your
       percentage is {{ perc }}%.
@@ -30,6 +34,7 @@ const quizData = "http://localhost:3000/GetKattaTest";
 import myjson from "@/json/myjson.json";
 import Savol from "@/components/Savol";
 import { serverget } from "@/const";
+const bcrypt = require('bcrypt');
 
 export default {
   components: { Savol },
@@ -91,14 +96,26 @@ export default {
       this.questionStage = true;
       //console.log('test'+JSON.stringify(this.questions[this.currentQuestion]));
     },
-     submit() {
+    submit() {
       console.log("1111");
-    
-      
-    } ,
+    },
     handleAnswer(e) {
       console.log("answer event ftw", e);
-      
+
+      //bcrypt.compare(req.body.password, user.password, function (err, res) {
+      bcrypt.compare("req.body.password", "user.password", function (err, res) {
+
+        if (err) {
+          console.log("handle error");
+        }
+        if (res)
+          // Send JWT
+          console.log("Send JWT");
+        else {
+          // response is OutgoingMessage object that server response http request
+          console.log("success: false, message: 'passwords do not match'");
+        }
+      });
     },
     handleResults() {
       console.log("handle results");
