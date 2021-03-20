@@ -34,7 +34,8 @@ const quizData = "http://localhost:3000/GetKattaTest";
 import myjson from "@/json/myjson.json";
 import Savol from "@/components/Savol";
 import { serverget } from "@/const";
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcryptjs';
+
 
 export default {
   components: { Savol },
@@ -103,7 +104,7 @@ export default {
       console.log("answer event ftw", e);
 
       //bcrypt.compare(req.body.password, user.password, function (err, res) {
-      bcrypt.compare("req.body.password", "user.password", function (err, res) {
+      bcrypt.compare("123", "$2a$10$HruD4Z5M65FNiJ.ypckxA..2FDGZG/h9wdyHNXQNZAE/yVJLzOjLO", function (err, res) { //ishladi
 
         if (err) {
           console.log("handle error");
