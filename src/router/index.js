@@ -7,6 +7,7 @@ import Tests from '../views/Tests.vue'
 
 import Tovar from '../views/Tovar.vue'
 import Client from '../views/Client.vue'
+import Edittest from '../views/Edittest.vue'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
@@ -75,7 +76,7 @@ const routes = [
     {
         path: '/admin',
         name: 'admin',
-        component: Client, 
+        component: Edittest, 
         meta: {
             requiresAuth: true,
             requiresAdmin: true
