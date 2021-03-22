@@ -23,7 +23,7 @@
     </div>
     <!-- https://abt.uz/ru/training/start -->
     <div v-if="resultsStage">
-      You got {{ correct }} right out of {{ questions.length }} questions. Your
+      You got {{ correct }} right out of {{ savollar.length }} questions. Your
       percentage is {{ perc }}%.
     </div>
   </div>
@@ -34,8 +34,7 @@ const quizData = "http://localhost:3000/GetKattaTest";
 import myjson from "@/json/myjson.json";
 import Savol from "@/components/Savol";
 import { serverget } from "@/const";
-import bcrypt from 'bcryptjs';
-
+import bcrypt from "bcryptjs";
 
 export default {
   components: { Savol },
@@ -99,22 +98,32 @@ export default {
     },
     submit() {
       console.log("1111");
+
+      let ar2 = this.savollar.filter((x) => x.Jav1 === "Ok");
+      this.correct = ar2.length;
+
+      this.questionStage = false;
+      this.resultsStage = true;
     },
     handleAnswer(e) {
       console.log("answer event ftw", e);
 
+      //let tjavob = this.savollar.find((x) => x.Savolnum === e.savol).Tugrijavob;
+      let ar1 = this.savollar.find((x) => x.Savolnum === e.savol);
       //bcrypt.compare(req.body.password, user.password, function (err, res) {
-      bcrypt.compare("123", "$2a$10$HruD4Z5M65FNiJ.ypckxA..2FDGZG/h9wdyHNXQNZAE/yVJLzOjLO", function (err, res) { //ishladi
-
+      //bcrypt.compare("123", "$2a$10$HruD4Z5M65FNiJ.ypckxA..2FDGZG/h9wdyHNXQNZAE/yVJLzOjLO", function (err, res) { //ishladi
+      bcrypt.compare(e.javob, ar1.Tugrijavob, function (err, res) {
         if (err) {
           console.log("handle error");
         }
-        if (res)
+        if (res) {
           // Send JWT
-          console.log("Send JWT");
-        else {
+          console.log("javob tugri topildi");
+          ar1.Jav1 = "Ok";
+        } else {
           // response is OutgoingMessage object that server response http request
-          console.log("success: false, message: 'passwords do not match'");
+          console.log(" message: 'javoblar do not match'");
+          ar1.Jav1 = "Xato";
         }
       });
     },
