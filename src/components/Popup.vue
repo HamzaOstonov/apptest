@@ -4,12 +4,12 @@
 
       <v-card>
       <v-card-title>
-        <h2>Add a New Project</h2>
+        <h2>Add a New Question-Yangi test savoli kiritish</h2>
       </v-card-title>
       <v-card-text>
         <v-form class="px-3" ref="form">
           <v-text-field v-model="title" label="Title" prepend-icon="folder" :rules="inputRules"></v-text-field>
-          <v-textarea v-model="content" label="Information" prepend-icon="edit" :rules="inputRules"></v-textarea>
+          <v-textarea  auto-grow v-model="content" label="Savol matni" prepend-icon="edit" :rules="inputRules"></v-textarea>
 
           <v-menu v-model="menu" :close-on-content-click="false">
             <v-text-field slot="activator" :rules="inputRules"
