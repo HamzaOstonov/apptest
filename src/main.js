@@ -5,6 +5,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import router from './router'
 import store from "./store";
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML"></script>
 
 Vue.config.productionTip = false
 
